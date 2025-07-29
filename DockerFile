@@ -1,0 +1,33 @@
+# Use Python 3.11 slim image
+FROM python:3.11-slim
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PATH="/root/.cargo/bin:$PATH"
+
+# Install system dependencies and UV
+RUN apt-get update && apt-get install -y \
+    curl \
+    build-essential \
+    && curl -LsSf https://astral.sh/uv/install.sh | sh \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set work directory
+WORKDIR /app
+
+# Copy configuration files
+COPY pyproject.toml .python-version config.yaml ./
+COPY .env.example .env
+
+# Install dependencies
+RUN uv sync --no-dev
+
+# Copy source code
+COPY rag_system/ ./rag_system/
+
+# Create directories for data
+RUN mkdir -p documents uploads logs data
+
+# Default command - CLI help
+CMD ["uv", "run", "python", "-m", "rag_system.cli", "--help"]
