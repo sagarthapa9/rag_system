@@ -1,59 +1,19 @@
-# RAG System Configuration
 app:
   name: "RAG System with Qdrant"
   version: "0.1.0"
-  debug: false
-  log_level: "INFO"
 
-# Vector Database Configuration
 qdrant:
-  host: "localhost"
+  host: "qdrant"
   port: 6333
   collection_name: "documents"
-  vector_size: 384  # sentence-transformers/all-MiniLM-L6-v2
-  distance: "Cosine"
-  timeout: 30
-  prefer_grpc: false
 
-# Embedding Model Configuration
 embeddings:
   model_name: "sentence-transformers/all-MiniLM-L6-v2"
-  device: "cpu"  # or "cuda" if GPU available
-  batch_size: 32
-  max_seq_length: 512
 
-# LLM Configuration
 llm:
-  provider: "openai"  # openai, anthropic, local
   model: "gpt-4o-mini"
-  temperature: 0.7
   max_tokens: 1000
-  timeout: 30
 
-# Document Processing
 document_processing:
   chunk_size: 1000
   chunk_overlap: 200
-  supported_formats: ["txt", "pdf", "docx", "md", "json"]
-  max_file_size_mb: 50
-
-# Search Configuration
-search:
-  top_k: 5
-  score_threshold: 0.7
-  rerank: true
-  hybrid_search: false
-
-# Caching
-cache:
-  enabled: true
-  backend: "memory"  # memory only (no redis)
-  ttl: 3600  # seconds
-  max_size: 1000  # for memory backend
-
-# API Configuration
-api:
-  host: "0.0.0.0"
-  port: 8000
-  workers: 1
-  reload: true
